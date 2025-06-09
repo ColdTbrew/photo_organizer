@@ -5,7 +5,8 @@ from collections import defaultdict
 import streamlit as st
 import plotly.graph_objs as go
 import plotly.express as px
-import numpy as np
+import sys
+import streamlit.web.cli as stcli
 
 SUPPORTED_IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.heic', '.cr2', '.nef', '.arw', '.raf', '.dng'}
 SUPPORTED_VIDEO_EXTENSIONS = {'.mp4', '.mov', '.avi'}
@@ -158,7 +159,9 @@ def round_aperture(aperture):
     try:
         val = float(aperture)
         stops = [1.0, 1.4, 2.0, 2.8, 4.0, 5.6, 8.0, 11.0, 16.0, 22.0, 32.0]
-        return str(stops[np.abs(np.array(stops) - val).argmin()])
+        # 가장 가까운 값을 찾기 위해 절대값 차이를 계산
+        closest_stop = min(stops, key=lambda x: abs(x - val))
+        return str(closest_stop)
     except:
         return "Unknown"
 
@@ -346,3 +349,9 @@ if start_pressed and input_path:
             st.plotly_chart(go.Figure(data=[go.Bar(x=labels, y=values, marker=dict(color=colors))]), use_container_width=True)
 
 st.caption("개발자 : github.com/ColdTbrew")
+
+
+if __name__ == '__main__':
+    if len(sys.argv) > 1 and sys.argv[1] == 'run':
+        sys.argv = ["streamlit", "run", __file__, "--server.headless", "true"]
+        sys.exit(stcli.main())

@@ -45,6 +45,8 @@
 - EXIF 데이터가 없는 파일은 파일의 수정일자를 기준으로 정리됩니다.
 - **주의:** 본 프로그램은 파일 손실에 대해 책임지지 않습니다.
 
+실행 streamlit run photo_organizer.py
+
 ## 개발자
 
 개발자: [github.com/ColdTbrew](https://github.com/ColdTbrew)
